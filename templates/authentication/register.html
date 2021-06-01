@@ -1,13 +1,78 @@
 {% extends 'base_auth.html' %}
+{%load static %}
 
 {% block content %}
+<style >
+	.showPasswordToggle {
+    cursor: pointer;
+    transition: all;
+}
 
-<div class="card">
-	<div class="card-body">
-		<h1>Login</h1>
-		
-	</div>
-	
+.showPasswordToggle:hover {
+    transform: scale(1.2);
+}
+
+</style>
+<div>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="card mt-5">
+                
+                <div class="card-body">
+                	<div class="card-title">
+                    <h4>
+                        Register For a Free Account
+                    </h4>
+                </div>
+
+                <form action="{% url 'register' %}" method="post">
+                	{%csrf_token%}
+                	{%include 'partials/_messages.html'%}
+                	<div class="form-group py-2">
+                        <input type="text" 
+                        name="username"
+                        class="form-control form-control-sm" 
+                        id="usernameField" 
+                        placeholder="Username"
+                        value="{{fieldValue.username}}"
+                        >
+                    </div> 
+                    <div class="invalid-feedback" style="display: none">
+                    </div>
+                    <p class="text-sm text-success usernameSuccessOutput"></p>
+                    <div class="form-group py-2">
+                        <input type="email" 
+                        name="email" 
+                        class="form-control form-control-sm" 
+                        id="emailField" 
+                        aria-describedby="emailHelp" 
+                        placeholder="Enter email"
+                        value="{{fieldValue.email}}"
+                        >
+                    </div>
+                    <div class="invalid-feedback-email" style="display: none">
+                    </div>
+                    <p class="text-sm text-success emailSuccessOutput"></p>
+
+                    <div class="form-group py-2">
+                        <input type="password" 
+                        name="password" 
+                        class="form-control form-control-sm" 
+                        id="passwordField" 
+                        placeholder="Password">
+                        <small class="float-end py-2 showPasswordToggle">SHOW
+                        </small>
+                    </div>
+
+                    <input type="submit" value="Register" class="btn btn-primary submit-btn"/>
+                </form>     
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
 </div>
+<script src="{% static 'js/register.js' %}"></script>
 
 {%endblock%}
