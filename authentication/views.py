@@ -113,7 +113,7 @@ class LoginView(View):
 				if user.is_active:
 					auth.login(request, user)
 					messages.success(request, 'Welcome, '+user.username+" You Are Now logged in")
-					return redirect('index')
+					return redirect('expenses')
 
 				# system_messages = messages.get_messages(request)
 				# for message in system_messages:

@@ -1,12 +1,105 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from .models import Category, Expense
+from userpreferences.models import UserPreference
+from django.contrib import messages
+from django.shortcuts import redirect
+from django.core.paginator import Paginator
 # Create your views here.
 
 
 @login_required(login_url='/authentication/login')
 def index(request):
-	return render(request, 'expenses/index.html')
+	categories = Category.objects.all()
+	expenses = Expense.objects.filter(owner=request.user)
+	
+	exists = UserPreference.objects.filter(user=request.user).exists()
+	preferences = {}
+	if exists:
+		preferences = UserPreference.objects.get(user=request.user)
+	else:
+		preferences = {'currency': 'None'}
+	
+	paginator = Paginator(expenses, 2)
+	page_number = request.GET.get('page')
+	page_obj = Paginator.get_page(paginator, page_number)
+
+	context = {
+		'expenses': expenses,
+		'preferences': preferences,
+		'page_obj': page_obj,
+	}
+
+	return render(request, 'expenses/index.html', context)
 
 
 def add_expense(request):
-	return render(request, 'expenses/add_expense.html')
+	categories = Category.objects.all()
+	
+	if request.method == 'GET':
+		context = {
+			'categories': categories
+		}
+		return render(request, 'expenses/add_expense.html', context)
+
+	if request.method == 'POST':
+		amount = request.POST['amount']
+		description = request.POST['description']
+		context = {
+			'categories': categories,
+			'values': request.POST
+		}
+		if not amount:
+			messages.error(request, 'Amount is required')
+			return render(request, 'expenses/add_expense.html', context)
+		if not description:
+			messages.error(request, 'Description is required')
+			return render(request, 'expenses/add_expense.html', context)
+		expense_date = request.POST['expense_date']
+		category = request.POST['category']
+
+		Expense.objects.create(amount=amount, date=expense_date, description=description, owner=request.user, category=category)
+		messages.success(request, 'Expense added successfully')
+		return redirect('expenses')
+
+
+def edit_expense(request, id):
+	expense = Expense.objects.get(pk=id)
+	categories = Category.objects.all()
+	context = {
+		'expense': expense,
+		'categories': categories
+	}
+	if request.method == 'GET':
+		return render(request, 'expenses/edit_expense.html', context)
+	if request.method == 'POST':
+		amount = request.POST['amount']
+		description = request.POST['description']
+		context = {
+			'categories': categories,
+			'values': request.POST
+		}
+		if not amount:
+			messages.error(request, 'Amount is required')
+			return render(request, 'expenses/add_expense.html', context)
+		if not description:
+			messages.error(request, 'Description is required')
+			return render(request, 'expenses/add_expense.html', context)
+		expense_date = request.POST['expense_date']
+		category = request.POST['category']
+		expense.owner = request.user
+		expense.amount = amount
+		expense.date = expense_date
+		expense.description = description
+		expense.category = category
+		expense.save()
+
+		messages.success(request, 'Expense edited successfully')
+		return redirect('expenses')
+
+
+def delete_expense(request, id):
+	expense = Expense.objects.get(pk=id)
+	expense.delete()
+	messages.success(request, 'Expense deleted successfully')
+	return redirect('expenses')

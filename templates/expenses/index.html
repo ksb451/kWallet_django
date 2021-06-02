@@ -1,14 +1,72 @@
 {% extends 'base.html' %}
-
 {%block content%}
-{%include 'partials/_messages.html'%}
+<div class="container-mt-3">
+    <div class="row">
+        <div class="col-md-10">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Expenses</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">My Expenses</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-md-2">
+            <a href="{% url 'add-expenses'%}" class="btn btn-primary">Add expenses</a>
+        </div>
+    </div>
+    <div class="container">
+        {%include 'partials/_messages.html'%}
+        {% if expenses%}
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Amount({{preferences.currency}})</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Date</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for expense in page_obj %}
+                <tr>
+                    <td>{{expense.amount}}</td>
+                    <td>{{expense.category}}</td>
+                    <td>{{expense.description}}</td>
+                    <td>{{expense.date}}</td>
+                    <td><a href="{% url 'edit-expenses' expense.id %}" class="btn btn-secondary btn-sm">Edit</a></td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+        <div class="container-mt-3">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="">
+                        Showing page {{page_obj.number}} of {{page_obj.paginator.num_pages}}
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <ul class="pagination justify-content-end">
+                        {%if page_obj.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{page_obj.previous_page_number}}">Previous</a>
+                        </li>
+                        {%endif%}
 
-<nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="#">Expenses</a></li>
-    <li class="breadcrumb-item active" aria-current="page">My Expenses</li>
-  </ol>
-</nav>
+                        <li class="page-item"><a class="page-link" href="#">{{page_obj.number}}</a></li>
 
-
-{%endblock%}
+                        {%if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{page_obj.next_page_number}}">Next</a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="?page={{page_obj.paginator.num_pages}}">{{page_obj.paginator.num_pages}}</a></li>
+                        {%endif%}
+                    </ul>
+                </div>
+            </div>
+            {%endif%}
+        </div>
+    </div>
+    {%endblock%}
