@@ -1,13 +1,22 @@
 .bd-placeholder-img {
-      font-size: 1.125rem;
-      text-anchor: middle;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      user-select: none;
-    }
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+.showPasswordToggle {
+    cursor: pointer;
+    transition: all;
+}
 
-    @media (min-width: 768px) {
-      .bd-placeholder-img-lg {
+.showPasswordToggle:hover {
+    transform: scale(1.2);
+}
+
+@media (min-width: 768px) {
+    .bd-placeholder-img-lg {
         font-size: 3.5rem;
-      }
     }
+}
+
