@@ -41,7 +41,7 @@ class RegistrationViews(View):
 
 				user = User.objects.create_user(username=username, email=email)
 				user.set_password(password)
-				user.is_active = False
+				user.is_active = True
 				user.save()
 
 				# 
@@ -64,7 +64,7 @@ class RegistrationViews(View):
 					'noreply@semycolon.com',
 					[email],
 					)
-				email.send(fail_silently=False)
+				email.send(fail_silently=True)
 				messages.success(request, 'Account Sucessfully Created')
 				return render(request, 'authentication/register.html')
 
