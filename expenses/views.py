@@ -95,14 +95,15 @@ def edit_expense(request, id):
 		description = request.POST['description']
 		context = {
 			'categories': categories,
+			'expense': expense,
 			'values': request.POST
 		}
 		if not amount:
 			messages.error(request, 'Amount is required')
-			return render(request, 'expenses/add_expense.html', context)
+			return render(request, 'expenses/edit_expense.html', context)
 		if not description:
 			messages.error(request, 'Description is required')
-			return render(request, 'expenses/add_expense.html', context)
+			return render(request, 'expenses/edit_expense.html', context)
 		expense_date = request.POST['expense_date']
 		category = request.POST['category']
 		expense.owner = request.user
