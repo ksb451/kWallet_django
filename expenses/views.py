@@ -30,7 +30,7 @@ def search_expenses(request):
 @login_required(login_url='/authentication/login')
 def index(request):
 	categories = Category.objects.all()
-	expenses = Expense.objects.filter(owner=request.user)
+	expenses = Expense.objects.filter(owner=request.user).order_by('-date')
 	
 	exists = UserPreference.objects.filter(user=request.user).exists()
 	preferences = {}
