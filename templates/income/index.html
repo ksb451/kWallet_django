@@ -12,7 +12,7 @@
             </nav>
         </div>
         <div class="col-md-2">
-            <a href="{% url 'add-expenses'%}" class="btn btn-primary">Add Income</a>
+            <a href="{% url 'add-incomes'%}" class="btn btn-primary">Add Income</a>
         </div>
     </div>
     <br>
@@ -40,17 +40,17 @@
                         <th></th>
                     </tr>
                 </thead>
-                {# <tbody>
-                    {% for expense in page_obj %}
+                <tbody>
+                    {% for income in page_obj %}
                     <tr>
-                        <td>{{expense.amount}}</td>
-                        <td>{{expense.category}}</td>
-                        <td>{{expense.description}}</td>
-                        <td>{{expense.date}}</td>
-                        <td><a href="{% url 'edit-expenses' expense.id %}" class="btn btn-secondary btn-sm">Edit</a></td>
+                        <td>{{income.amount}}</td>
+                        <td>{{income.source}}</td>
+                        <td>{{income.description}}</td>
+                        <td>{{income.date}}</td>
+                        <td><a href="{% url 'edit-incomes' income.id %}" class="btn btn-secondary btn-sm">Edit</a></td>
                     </tr>
                     {%endfor%}
-                </tbody> #}
+                </tbody>
             </table>
         </div>
         <div class="no-search-result">
