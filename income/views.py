@@ -97,6 +97,7 @@ def edit_income(request, id):
 	if request.method == 'POST':
 		amount = request.POST['amount']
 		description = request.POST['description']
+		income_date = request.POST['income_date']
 		context = {
 			'sources': sources,
 			'income': income,
@@ -108,7 +109,9 @@ def edit_income(request, id):
 		if not description:
 			messages.error(request, 'Description is required')
 			return render(request, 'income/edit_income.html', context)
-		income_date = request.POST['income_date']
+		if not income_date:
+			messages.error(request, 'Date is required')
+			return render(request, 'income/edit_income.html', context)
 		source = request.POST['source']
 		income.owner = request.user
 		income.amount = amount

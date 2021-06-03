@@ -64,6 +64,7 @@ def add_expense(request):
 	if request.method == 'POST':
 		amount = request.POST['amount']
 		description = request.POST['description']
+		expense_date = request.POST['expense_date']
 		context = {
 			'categories': categories,
 			'values': request.POST
@@ -74,7 +75,10 @@ def add_expense(request):
 		if not description:
 			messages.error(request, 'Description is required')
 			return render(request, 'expenses/add_expense.html', context)
-		expense_date = request.POST['expense_date']
+		if not expense_date:
+			messages.error(request, 'Date is required')
+			return render(request, 'expenses/add_expense.html', context)
+		
 		category = request.POST['category']
 
 		Expense.objects.create(amount=amount, date=expense_date, description=description, owner=request.user, category=category)
@@ -94,6 +98,8 @@ def edit_expense(request, id):
 	if request.method == 'POST':
 		amount = request.POST['amount']
 		description = request.POST['description']
+		expense_date = request.POST['expense_date']
+
 		context = {
 			'categories': categories,
 			'expense': expense,
@@ -105,7 +111,9 @@ def edit_expense(request, id):
 		if not description:
 			messages.error(request, 'Description is required')
 			return render(request, 'expenses/edit_expense.html', context)
-		expense_date = request.POST['expense_date']
+		if not expense_date:
+			messages.error(request, 'Date is required')
+			return render(request, 'expenses/add_expense.html', context)
 		category = request.POST['category']
 		expense.owner = request.user
 		expense.amount = amount
