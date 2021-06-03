@@ -7,6 +7,7 @@ from django.shortcuts import redirect
 from django.core.paginator import Paginator
 import json
 from django.http import JsonResponse
+import datetime
 # Create your views here.
 
 
@@ -38,7 +39,7 @@ def index(request):
 	else:
 		preferences = {'currency': 'None'}
 	
-	paginator = Paginator(expenses, 2)
+	paginator = Paginator(expenses, 6)
 	page_number = request.GET.get('page')
 	page_obj = Paginator.get_page(paginator, page_number)
 
@@ -122,3 +123,37 @@ def delete_expense(request, id):
 	expense.delete()
 	messages.success(request, 'Expense deleted successfully')
 	return redirect('expenses')
+
+
+def expense_category_sumary(request):
+	todays_date = datetime.date.today()
+	six_months_ago = todays_date-datetime.timedelta(days=150)
+	expenses = Expense.objects.filter(
+		owner=request.user,
+		date__gte=six_months_ago,
+		date__lte=todays_date)
+
+	finalrep = {
+
+	}
+
+	def get_category(expense):
+		return expense.category
+
+	category_list = list(set(map(get_category, expenses)))
+
+	def get_expense_category_amount(category):
+		amount = 0
+		filtered_by_category = expenses.filter(category=category)
+		for item in filtered_by_category:
+			amount += item.amount
+		return amount
+
+	for y in category_list:
+		finalrep[y] = get_expense_category_amount(y)
+
+	return JsonResponse({'expense_category_data': finalrep}, safe=False)
+
+
+def stastView(request):
+	return render(request, 'expenses/stats.html')

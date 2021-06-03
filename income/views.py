@@ -38,7 +38,7 @@ def index(request):
 	else:
 		preferences = {'currency': 'None'}
 	
-	paginator = Paginator(incomes, 2)
+	paginator = Paginator(incomes, 6)
 	page_number = request.GET.get('page')
 	page_obj = Paginator.get_page(paginator, page_number)
 
