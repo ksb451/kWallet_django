@@ -25,7 +25,9 @@
       data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+    <span class="navbar-nav px-3">
+        <a class="nav-link">{{request.user.username}}</a>
+    </span>
     <ul class="navbar-nav px-3">
       <li class="nav-item text-nowrap">
         <form action="{% url 'logout'%}" method="post">

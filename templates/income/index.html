@@ -6,19 +6,19 @@
         <div class="col-md-10">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Expenses</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">My Expenses</li>
+                    <li class="breadcrumb-item"><a href="#">Income</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">My Income</li>
                 </ol>
             </nav>
         </div>
         <div class="col-md-2">
-            <a href="{% url 'add-expenses'%}" class="btn btn-primary">Add expenses</a>
+            <a href="{% url 'add-expenses'%}" class="btn btn-primary">Add Income</a>
         </div>
     </div>
     <br>
     <div class="container">
         {%include 'partials/_messages.html'%}
-        {% if expenses%}
+        {% if userincomes.count  %}
         <div class="row">
             <div class="col-md-8">
                 
@@ -34,13 +34,13 @@
                 <thead>
                     <tr>
                         <th>Amount({{preferences.currency}})</th>
-                        <th>Category</th>
+                        <th>Sources</th>
                         <th>Description</th>
                         <th>Date</th>
                         <th></th>
                     </tr>
                 </thead>
-                <tbody>
+                {# <tbody>
                     {% for expense in page_obj %}
                     <tr>
                         <td>{{expense.amount}}</td>
@@ -50,7 +50,7 @@
                         <td><a href="{% url 'edit-expenses' expense.id %}" class="btn btn-secondary btn-sm">Edit</a></td>
                     </tr>
                     {%endfor%}
-                </tbody>
+                </tbody> #}
             </table>
         </div>
         <div class="no-search-result">
@@ -61,7 +61,7 @@
                 <thead>
                     <tr>
                         <th>Amount({{preferences.currency}})</th>
-                        <th>Category</th>
+                        <th>Sources</th>
                         <th>Description</th>
                         <th>Date</th>
                         <th></th>
@@ -104,6 +104,6 @@
         {%endif%}
         
     </div>
-    <script src="{% static 'js/searchExpenses.js' %}">
+    <script src="{% static 'js/searchIncome.js' %}">
     </script>
     {%endblock%}
